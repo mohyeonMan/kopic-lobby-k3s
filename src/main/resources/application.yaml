@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: kopic-lobby
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+kopic:
+  node-id: lobby-local
