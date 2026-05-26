@@ -3,9 +3,13 @@ package io.jhpark.kopic.lobby.route;
 import io.jhpark.kopic.lobby.redis.GeDirectory;
 import io.jhpark.kopic.lobby.route.token.RouteTokenIssuer;
 import io.jhpark.kopic.lobby.support.LobbyException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class RouteService {
 
 	private static final int JOIN_ACTION = 0;
@@ -14,30 +18,31 @@ public class RouteService {
 	private final GeDirectory geDirectory;
 	private final RouteTokenIssuer routeTokenIssuer;
 
-	public RouteService(GeDirectory geDirectory, RouteTokenIssuer routeTokenIssuer) {
-		this.geDirectory = geDirectory;
-		this.routeTokenIssuer = routeTokenIssuer;
-	}
-
 	public RouteResponse quick(RouteRequest.NicknameOnly request) {
 		String nickname = requireNickname(request);
+		log.info("route request type=quick nickname={}", nickname);
 		String geId = geDirectory.findQuickRouteGeId()
 				.orElseThrow(() -> LobbyException.routeUnavailable("No ACTIVE GE is available"));
+		log.info("route issued type=quick geId={} nickname={}", geId, nickname);
 		return routeResponse(JOIN_ACTION, nickname, geId, null);
 	}
 
 	public RouteResponse privateCreate(RouteRequest.NicknameOnly request) {
 		String nickname = requireNickname(request);
+		log.info("route request type=private-create nickname={}", nickname);
 		String geId = geDirectory.findPrivateCreateGeId()
 				.orElseThrow(() -> LobbyException.routeUnavailable("No ACTIVE GE is available"));
+		log.info("route issued type=private-create geId={} nickname={}", geId, nickname);
 		return routeResponse(CREATE_PRIVATE_ROOM_ACTION, nickname, geId, null);
 	}
 
 	public RouteResponse privateJoin(RouteRequest.PrivateJoin request) {
 		String nickname = requireNickname(request);
 		String roomCode = requireRoomCode(request);
+		log.info("route request type=private-join nickname={} roomCode={}", nickname, roomCode);
 		String geId = geDirectory.findGeIdByRoomCode(roomCode)
 				.orElseThrow(() -> LobbyException.routeUnavailable("No ACTIVE GE is available for roomCode"));
+		log.info("route issued type=private-join geId={} nickname={} roomCode={}", geId, nickname, roomCode);
 		return routeResponse(JOIN_ACTION, nickname, geId, roomCode);
 	}
 

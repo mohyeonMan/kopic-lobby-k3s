@@ -15,24 +15,18 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import io.jhpark.kopic.lobby.config.RouteTokenProperties;
 import io.jhpark.kopic.lobby.support.LobbyException;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class RouteTokenIssuer {
 
 	private final RouteTokenProperties routeTokenProperties;
-	private final Clock clock;
-
-	@Autowired
-	public RouteTokenIssuer(RouteTokenProperties routeTokenProperties) {
-		this(routeTokenProperties, Clock.systemUTC());
-	}
-
-	RouteTokenIssuer(RouteTokenProperties routeTokenProperties, Clock clock) {
-		this.routeTokenProperties = routeTokenProperties;
-		this.clock = clock;
-	}
+	@Setter(AccessLevel.PACKAGE)
+	private Clock clock = Clock.systemUTC();
 
 	public String issue(int action, String nickname, String geId, String roomCode) {
 		RouteTokenPayload payload = new RouteTokenPayload(
