@@ -24,6 +24,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
 	implementation 'com.github.ben-manes.caffeine:caffeine'
+	implementation 'com.nimbusds:nimbus-jose-jwt:10.9'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

@@ -8,3 +8,14 @@ spring:
 
 kopic:
   node-id: lobby-local
+  route-token:
+    secret: ${KOPIC_ROUTE_TOKEN_SECRET}
+    ttl: ${KOPIC_ROUTE_TOKEN_TTL:10s}
+  redis:
+    keys:
+      ge-prefix: ${KOPIC_REDIS_KEY_GE_PREFIX:ge:}
+      ge-load: ${KOPIC_REDIS_KEY_GE_LOAD:ge:load}
+      quick-available: ${KOPIC_REDIS_KEY_QUICK_AVAILABLE:quick:available}
+      room-code-prefix: ${KOPIC_REDIS_KEY_ROOM_CODE_PREFIX:roomcode:}
+  lobby:
+    quick-candidate-scan-limit: ${KOPIC_LOBBY_QUICK_CANDIDATE_SCAN_LIMIT:5}
